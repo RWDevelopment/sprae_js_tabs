@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="en" :data-theme="light || isLight? 'light':'dark'">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <title>sprae_pico_components</title>
+    <style>
+      [\:each],[\:hidden] {visibility: hidden}
+      [role="tabpanel"] {
+        padding: var(--spacing);
+        & nav {
+          margin-bottom: calc(var(--spacing)*2);
+          padding: 0 calc(var(--spacing)*.5);
+          & li a  {
+            background: transparent;
+            transition: all var(--transition);
+            padding-inline: calc(var(--nav-link-spacing-horizontal)*3);
+            border-bottom: 2px solid transparent;
+            border-radius: 0;
+            color: var(--blockquote-footer-color);
+          }
+          & [aria-current="true"] {
+            color: var(--contrast);
+            border-color: var(--contrast);
+            user-select: none;
+            pointer-events: none;
+          }
+          & [role=link] {
+            padding-inline: calc(var(--nav-link-spacing-horizontal)*.35);
+            color: var(--contrast);
+          }
+        }
+        & section {
+          margin-bottom: 0;
+        }
+        & section > * {
+          animation-duration: 0.3s;
+          animation-fill-mode: both;
+          animation-name: slideIn;
+        }
+        & section h4 {
+          font-weight: 800;
+        }
+      }
+      @keyframes slideIn {
+      0% {
+        transform: translateY(1rem);
+        opacity: 0;
+      }
+      100% {
+        transform:translateY(0rem);
+        opacity: 1;
+      }
+      0% {
+        transform: translateY(1rem);
+        opacity: 0;
+      }
+      }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+
+      <article>
+        <header>Native no custom css</header>
+        <div :with="{tab: 0, tabs: ['First','Second','Third']}">
+            <nav>
+              <ul>
+                <li :each="name,index in tabs">
+                  <a href="#" @click.prevent="tab = index" :aria-current="tab == index? 'true':'false'" :text="name"></a>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <a href="#" @click.prevent="tab == 0? tab = tabs.length - 1 : tab = tab - 1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path></svg>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" @click.prevent="tab == tabs.length - 1? tab = 0 : tab = tab + 1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path></svg>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            <section>
+              <div :if="tab == 0" :hidden>
+                <h4>First content</h4>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos, labore ut alias quidem rerum temporibus repellendus incidunt animi.</p>
+              </div>
+              <div :if="tab == 1" :hidden>
+                <h4>Second content</h4>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident rem voluptatibus, fugiat tenetur inventore molestias esse. Quia facere quis incidunt quidem iure.</p>
+              </div>
+              <div :if="tab == 2" :hidden>
+                <h4>Third content</h4>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi eligendi enim deleniti officiis dicta reprehenderit numquam cupiditate, at eius natus maiores modi neque officia unde minus ab ea aliquam quo.</p>
+              </div>
+            </section>
+        </div>
+      </article>
+
+      <article>
+        <header>With custom css</header>
+        <div :with="{tab: 0, tabs: ['First','Second','Third']}" role="tabpanel">
+          <nav>
+            <ul>
+              <li :each="name,index in tabs">
+                <a href="#" @click.prevent="tab = index" :aria-current="tab == index? 'true':'false'" :text="name"></a>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <a href="#" role="link" @click.prevent="tab == 0? tab = tabs.length - 1 : tab = tab - 1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path></svg>
+                </a>
+              </li>
+              <li>
+                <a href="#" role="link" @click.prevent="tab == tabs.length - 1? tab = 0 : tab = tab + 1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path></svg>
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <section>
+            <div :if="tab == 0" :hidden>
+              <h4>First content</h4>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos, labore ut alias quidem rerum temporibus repellendus incidunt animi.</p>
+            </div>
+            <div :if="tab == 1" :hidden>
+              <h4>Second content</h4>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident rem voluptatibus, fugiat tenetur inventore molestias esse. Quia facere quis incidunt quidem iure.</p>
+            </div>
+            <div :if="tab == 2" :hidden>
+              <h4>Third content</h4>
+              <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi eligendi enim deleniti officiis dicta reprehenderit numquam cupiditate, at eius natus maiores modi neque officia unde minus ab ea aliquam quo.</p>
+            </div>
+          </section>
+        </div>
+      </article>  
+    </main>
+      
+    <script type="module">
+
+        import sprae from 'https://cdn.jsdelivr.net/npm/sprae@8.1.3/dist/sprae.min.js';
+        const app = sprae(document.documentElement, { 
+            isLight: true,
+        });
+        
+    </script>
+    
+</body>
+</html>
